@@ -111,34 +111,39 @@ for a in szinhaz.values():
 print("A szinhaznak eddig {} bevetele van.".format(bevetel))
 print("6. feladat")
 """Egyedulallo jegyek keresese. """
+
+
+for k,v in szinhaz.items():
+    if v['foglat'] == "foglalt":
+        szinhaz[k]['egyedulallo'] = False
+        continue
+    if v['szek szama'] == 1 and szinhaz[k+1]['foglat'] == "foglalt":
+        szinhaz[k]['egyedulallo'] = True
+        continue
+    if v['szek szama'] == 20 and szinhaz[k-1]['foglat'] == "foglalt":
+        szinhaz[k]['egyedulallo'] = True
+        continue
+    if v['szek szama'] != 1 and v['szek szama'] != 20 and szinhaz[k+1]['foglat'] == "foglalt" and szinhaz[k-1]['foglat'] == "foglalt":
+        szinhaz[k]['egyedulallo'] = True
+        continue
+    szinhaz[k]['egyedulallo'] = False
+
 egyedulalo = 0
-elozo = str()
-elozosor=str()
 for a in szinhaz.values():
-    if a["foglat"] != "foglat":
-        if elozo != "foglalt":
-            egyedulalo+=1
-    elozo=a["foglat"]
-print("Oszesen {} szabad hely van".format(egyedulalo))
+    if a["egyedulallo"]:
+        egyedulalo+=1
+print("Oszesen {} szabad, egyedulallo hely van".format(egyedulalo))
 
 print("7. feladat")
 """ki kell  irni a szabad helyek es a hozza tartozo arakat
 """
-"""n=int()
+sor = 1
 with open("szabad.txt","wt",encoding="utf-8") as d:
     for v in szinhaz.values():
-        if v["sor szama"] != n:  
-            if v["foglat"] != "foglalt":
-                d.write(str(v["ar kategoria"]))
-            elif v["foglat"] == "foglalt":
-                d.write("x")
-        d.write("\n")
-        n=v["sor szama"]
-        else:
-            if v["sor szama"] != n:  
-                if v["foglat"] != "foglalt":
-                    d.write(str(v["ar kategoria"]))
-                elif v["foglat"] == "foglalt":
-                    d.write("x")
-        d.write("\n")
-"""
+        if v["sor szama"] != sor:
+            d.write('\n')
+            sor += 1
+        if v["foglat"] != "foglalt":
+            d.write(str(v["ar kategoria"]))
+        elif v["foglat"] == "foglalt":
+            d.write("x")
